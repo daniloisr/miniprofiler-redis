@@ -16,8 +16,10 @@ module.exports = function(redis) {
           if (callback && req && req.miniprofiler) {
             const query = `${cmd.command} ${cmd.args.join(', ')}`.trim();
             const timing = req.miniprofiler.startTimeQuery('redis', query);
+            const miniprofiler = req.miniprofiler;
+
             cmd.callback = function() {
-              req.miniprofiler.stopTimeQuery(timing);
+              miniprofiler.stopTimeQuery(timing);
               callback.apply(this, arguments);
             };
           }
