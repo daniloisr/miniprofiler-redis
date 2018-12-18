@@ -1,6 +1,6 @@
 'use strict';
 
-const miniprofiler = require('miniprofiler');
+const miniprofiler = require('@daniloisr/miniprofiler');
 const http = require('http');
 const ip = require('docker-ip');
 
@@ -15,8 +15,7 @@ const app = miniprofiler.express({
 
 const server = http.createServer((request, response) => {
   app(request, response, () => {
-    require('../index.js')(redis).handler(request, response, () => {
-
+    miniprofiler.express.for(require('../index.js')(redis))(request, response, () => {
       if (request.url == '/redis-info') {
         client.info(() => {
           response.end('');

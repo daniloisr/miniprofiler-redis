@@ -8,18 +8,18 @@ module.exports = function(redis) {
 
   return {
     name: 'redis',
-    handler: function(req, res, next) {
-
-      redis.RedisClient.prototype.internal_send_command = !req.miniprofiler || !req.miniprofiler.enabled ? redisSendCommand : function(cmd) {
+    handler: function(asyncContext, next) {
+      redis.RedisClient.prototype.internal_send_command = !asyncContext.get() || !asyncContext.get().enabled ? redisSendCommand : function(cmd) {
         if (this.ready && blacklist.indexOf(cmd.command) == -1) {
           const callback = cmd.callback;
-          if (callback && req && req.miniprofiler) {
+          if (callback && asyncContext.get()) {
             const query = `${cmd.command} ${cmd.args.join(', ')}`.trim();
-            const timing = req.miniprofiler.startTimeQuery('redis', query);
-            const miniprofiler = req.miniprofiler;
+            const timing = asyncContext.get().startTimeQuery('redis', query);
+            const miniprofiler = asyncContext.get();
 
             cmd.callback = function() {
               miniprofiler.stopTimeQuery(timing);
+              asyncContext.set(miniprofiler);
               callback.apply(this, arguments);
             };
           }

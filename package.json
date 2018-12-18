@@ -1,6 +1,6 @@
 {
-  "name": "miniprofiler-redis",
-  "version": "1.0.1",
+  "name": "@daniloisr/miniprofiler-redis",
+  "version": "3.0.0",
   "description": "A redis provider for miniprofiler timing analysis",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "docker-ip": "^2.0.1",
     "eslint": "^3.0.1",
     "istanbul": "^0.4.4",
-    "miniprofiler": "^1.2.0",
+    "@daniloisr/miniprofiler": "^3.0.0",
     "mocha": "^2.5.3",
     "redis": "^2.6.2",
     "request": "^2.72.0"
